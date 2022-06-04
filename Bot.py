@@ -9,6 +9,12 @@ with open("token.txt", 'r') as fichier:
     lignes = fichier.readlines()
     token = lignes[0]
 
+def erreur_permissions():
+    embed_error.clear_fields()
+    embed_error.set_footer(text=f"Erreur")
+    embed_error.add_field(name=f"Désolé !",value=f"Il semblerait que vous ne disposez pas des permissions nécessaires à l'exécution de cette commande. Contactez un maître de jeu si vous pensez rencontrer une erreur.")
+    return embed_error
+
 #######################
 ### COMMANDES ADMIN ###
 #######################
@@ -100,10 +106,7 @@ async def creation_pays(ctx, *, nom_du_pays):
 @creation_pays.error
 async def creation_pays_error(ctx, error):
     if isinstance(error, discord.ext.commands.MissingPermissions):
-        embed_error.clear_fields()
-        embed_error.set_footer(text=f"Erreur")
-        embed_error.add_field(name=f"Désolé !",value=f"Il semblerait que vous ne disposez pas des permissions nécessaires à l'exécution de cette commande. Contactez un maître de jeu si vous pensez rencontrer une erreur.")
-        await ctx.send(embed=embed_error)
+        await ctx.send(embed=erreur_permissions())
 
 ########################
 ### AUTRES COMMANDES ###
@@ -120,10 +123,7 @@ async def shutdown(ctx):
 @shutdown.error
 async def shutdown_error(ctx, error):
     if isinstance(error, discord.ext.commands.MissingPermissions):
-        embed_error.clear_fields()
-        embed_error.set_footer(text=f"Erreur")
-        embed_error.add_field(name=f"Désolé !",value=f"Il semblerait que vous ne disposez pas des permissions nécessaires à l'exécution de cette commande. Contactez un maître de jeu si vous pensez rencontrer une erreur.")
-        await ctx.send(embed=embed_error)
+        await ctx.send(embed=erreur_permissions())
 
 #################
 ### LANCEMENT ###
