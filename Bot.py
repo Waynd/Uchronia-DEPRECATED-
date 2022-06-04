@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from random import randint
+import random
 
 bot = commands.Bot(command_prefix='uc!')
 activite = discord.Game("vérifier que tout marche. Ce n'est pas le cas.")
@@ -27,7 +27,7 @@ async def on_ready():
     embed_val.clear_fields()
     embed_val.add_field(name=f"Activation",value=f"Uchro-Bot a correctement été démarré.")
     await bot.get_channel(959516597867929721).send(embed=embed_val)
-    if randint(0,50) == 25:
+    if random.randint(0,50) == 25:
         await bot.get_channel(959516597867929721).send("https://tenor.com/view/atomic-nuke-j-robert-oppenheimer-destroyer-of-the-worlds-death-gif-15159234")
 
 @bot.command(name="offline", help="Affiche le bot hors-ligne")
@@ -124,6 +124,34 @@ async def shutdown(ctx):
 async def shutdown_error(ctx, error):
     if isinstance(error, discord.ext.commands.MissingPermissions):
         await ctx.send(embed=erreur_permissions())
+
+@bot.command(name="meteo", help="Affiche une météo au hasard")
+async def meteo(ctx):
+    correspondance = {"Calme": ":sunny:", "Pluvieux": ":cloud_rain:", "Venteux": ":wind_blowing_face:", "Très venteux": ":wind_blowing_face: :wind_blowing_face:", "Venteux et pluvieux": " :wind_blowing_face: :cloud_rain:", "Très venteux et pluvieux": ":wind_blowing_face: :wind_blowing_face: :cloud_rain:", "Tempête": ":cloud_tornado:", "Ouragan": ":cloud_tornado: :cloud_tornado:"}
+    directions = ("Nord", "Nord-Est", "Est", "Sud-Est", "Sud", "Sud-Ouest", "Ouest", "Nord-Ouest")
+    temperature = random.randint(-10, 25)
+    vent = random.randint(0, 130)
+    direction = random.choice(directions)
+    if vent < 6:
+        temps = "Calme"
+    elif vent > 6 and vent < 25:
+        temps = random.choice(("Calme", "Pluvieux"))
+    elif vent > 25 and vent < 50:
+        temps = random.choice(("Venteux", "Venteux et pluvieux"))
+    elif vent > 50 and vent < 80:
+        temps = random.choice(("Très venteux", "Très venteux et pluvieux"))
+    elif vent > 80 and vent < 100:
+        temps = "Tempête"
+    else:
+        temps = "Ouragan"
+    embed_rep.clear_fields()
+    embed_rep.set_footer(text="Météo du Nolarien")
+    embed_rep.add_field(name=f"Météo {correspondance[temps]}", value=f"Voici les conditions météo du jour actuel: \n:white_small_square: {temperature}°C \n:white_small_square: {temps} \n:white_small_square: {vent}km/h en direction du {direction}")
+    if temps == "Tempête":
+        embed_rep.add_field(name="Alerte", value="Tempête :warning:")
+    elif temps == "Ouragan":
+        embed_rep.add_field(name="Alerte", value=":warning: **Ouragan** :warning: \n*Recommandations aux populations: ne sortez en aucun cas, restez abrité sous terre ou dans un abri adapté. Suivez les consignes nationales.*")
+    await ctx.send(embed=embed_rep)
 
 #################
 ### LANCEMENT ###
