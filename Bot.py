@@ -115,6 +115,7 @@ async def creation_pays_error(ctx, error):
 @bot.command(name="shutdown", help="Eteint le bot")
 @discord.ext.commands.has_permissions(administrator=True)
 async def shutdown(ctx):
+    await bot.change_presence(status=discord.Status.offline, activity=None)
     embed_error.clear_fields()
     embed_error.add_field(name=f"*Bip bip bip*",value=f"Uchro-Bot s'est correctement éteint.")
     await bot.get_channel(959516597867929721).send(embed=embed_error)
