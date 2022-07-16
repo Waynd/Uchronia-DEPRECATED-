@@ -15,6 +15,26 @@ def erreur_permissions():
     embed_error.add_field(name=f"Désolé !",value=f"Il semblerait que vous ne disposez pas des permissions nécessaires à l'exécution de cette commande. Contactez un maître de jeu si vous pensez rencontrer une erreur.")
     return embed_error
 
+@bot.command(name="suppression_pays", help="Supprime les salons d'un pays")
+@discord.ext.commands.has_permissions(administrator=True)
+async def suppression_pays(ctx, *, nom_du_pays):
+    guild = ctx.guild
+    category = discord.utils.get(guild.categories, name=nom_du_pays)
+    role = discord.utils.get(guild.roles, name = nom_du_pays)
+    for channel in category.text_channels: 
+        await channel.delete()
+    await role.delete()
+    await category.delete()
+    embed_val.clear_fields()
+    embed_val.set_footer(text=f"Suppression de pays")
+    embed_val.add_field(name=f"Suppression de pays terminée !",value=f"Le rôle, la catégorie et l'ensemble des salons ont été correctement supprimés !")
+    await ctx.send(embed=embed_val)
+    
+@suppression_pays.error
+async def suppression_pays_error(ctx, error):
+    if isinstance(error, discord.ext.commands.MissingPermissions):
+        await ctx.send(embed=erreur_permissions())
+
 #######################
 ### COMMANDES ADMIN ###
 #######################
