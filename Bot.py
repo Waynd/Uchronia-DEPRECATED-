@@ -5,7 +5,7 @@ import random
 bot = commands.Bot(command_prefix='uc!')
 activite = discord.Game("vérifier que tout marche. Ce n'est pas le cas.")
 global token
-with open("token.txt", 'r') as fichier:
+with open("../../UchroBot/token.txt", 'r') as fichier:
     lignes = fichier.readlines()
     token = lignes[0]
 
