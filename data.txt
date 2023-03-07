@@ -1,0 +1,11 @@
+# Token
+INSERT HERE
+
+# File directory (ignored by the bot, only for you to copy before startup)
+INSERT HERE
+
+# Log channel ID
+INSERT HERE
+
+# Archives category ID
+INSERT HERE
